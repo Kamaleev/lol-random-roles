@@ -1,42 +1,64 @@
 import 'normalize.css';
-import './App.css'
 import React, { useState, useEffect } from 'react';
+import './App.css';
 
-function App() {
-  const [players, setPlayers] = useState([]);
-  const [showNameInput, setShowNameInput] = useState(true);
-  const [playerNames, setPlayerNames] = useState(['', '', '', '', '']);
-  const [selectedRoles, setSelectedRoles] = useState({});
-  const [assignedRoles, setAssignedRoles] = useState({});
-  const [showResults, setShowResults] = useState(false);
+// Типы и интерфейсы
+type Role = 'adc' | 'jungle' | 'top' | 'support' | 'mid';
+
+interface Player {
+  id: number;
+  name: string;
+}
+
+interface SelectedRoles {
+  [playerId: number]: Role[];
+}
+
+interface AssignedRoles {
+  [playerId: number]: Role;
+}
+
+const App: React.FC = () => {
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [showNameInput, setShowNameInput] = useState<boolean>(true);
+  const [playerNames, setPlayerNames] = useState<string[]>(['', '', '', '', '']);
+  const [selectedRoles, setSelectedRoles] = useState<SelectedRoles>({});
+  const [assignedRoles, setAssignedRoles] = useState<AssignedRoles>({});
+  const [showResults, setShowResults] = useState<boolean>(false);
 
   // Роли в игре
-  const roles = ['adc', 'jungle', 'top', 'support', 'mid'];
+  const roles: Role[] = ['adc', 'jungle', 'top', 'support', 'mid'];
 
   // Загрузка ников из localStorage при монтировании
   useEffect(() => {
     const savedNames = localStorage.getItem('playerNames');
     if (savedNames) {
-      const names = JSON.parse(savedNames);
-      setPlayerNames(names);
-      // Если есть сохраненные ники, сразу показываем основной интерфейс
-      if (names.every(name => name.trim() !== '')) {
-        initializePlayers(names);
-        setShowNameInput(false);
+      try {
+        const names: string[] = JSON.parse(savedNames);
+        if (Array.isArray(names) && names.length === 5) {
+          setPlayerNames(names);
+          // Если есть сохраненные ники, сразу показываем основной интерфейс
+          if (names.every(name => name.trim() !== '')) {
+            initializePlayers(names);
+            setShowNameInput(false);
+          }
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки ников:', error);
       }
     }
   }, []);
 
   // Инициализация игроков
-  const initializePlayers = (names) => {
-    const playersList = names.map((name, index) => ({
+  const initializePlayers = (names: string[]): void => {
+    const playersList: Player[] = names.map((name, index) => ({
       id: index,
-      name: name,
+      name: name.trim(),
     }));
     setPlayers(playersList);
     
     // Инициализация выбранных ролей для каждого игрока
-    const initialRoles = {};
+    const initialRoles: SelectedRoles = {};
     playersList.forEach(player => {
       initialRoles[player.id] = [];
     });
@@ -44,7 +66,7 @@ function App() {
   };
 
   // Сохранение ников и переход к выбору ролей
-  const handleNamesSubmit = (e) => {
+  const handleNamesSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (playerNames.every(name => name.trim() !== '')) {
       localStorage.setItem('playerNames', JSON.stringify(playerNames));
@@ -56,14 +78,14 @@ function App() {
   };
 
   // Обновление ника игрока
-  const handleNameChange = (index, value) => {
+  const handleNameChange = (index: number, value: string): void => {
     const newNames = [...playerNames];
     newNames[index] = value;
     setPlayerNames(newNames);
   };
 
   // Переключение роли для игрока
-  const toggleRole = (playerId, role) => {
+  const toggleRole = (playerId: number, role: Role): void => {
     setSelectedRoles(prev => {
       const playerRoles = [...(prev[playerId] || [])];
       const roleIndex = playerRoles.indexOf(role);
@@ -84,15 +106,15 @@ function App() {
   };
 
   // Проверка, может ли игрок получить определенную роль
-  const canPlayerTakeRole = (playerId, role, assignments) => {
+  const canPlayerTakeRole = (playerId: number, role: Role): boolean => {
     const playerRoles = selectedRoles[playerId] || [];
     return playerRoles.includes(role);
   };
 
   // Алгоритм рандомного распределения ролей
-  const randomizeRoles = () => {
+  const randomizeRoles = (): boolean => {
     // Проверяем, что у каждого игрока выбрана хотя бы одна роль
-    for (let player of players) {
+    for (const player of players) {
       if (!selectedRoles[player.id] || selectedRoles[player.id].length === 0) {
         alert(`Игрок ${player.name} должен выбрать хотя бы одну роль`);
         return false;
@@ -103,15 +125,15 @@ function App() {
     const maxAttempts = 1000;
 
     while (attempts < maxAttempts) {
-      const availableRoles = [...roles];
-      const assignments = {};
+      const availableRoles: Role[] = [...roles];
+      const assignments: AssignedRoles = {};
       const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
 
       let success = true;
 
-      for (let player of shuffledPlayers) {
+      for (const player of shuffledPlayers) {
         const possibleRoles = availableRoles.filter(role => 
-          canPlayerTakeRole(player.id, role, assignments)
+          canPlayerTakeRole(player.id, role)
         );
 
         if (possibleRoles.length === 0) {
@@ -141,21 +163,34 @@ function App() {
   };
 
   // Сброс к вводу имен
-  const resetNames = () => {
+  const resetNames = (): void => {
     localStorage.removeItem('playerNames');
     setPlayerNames(['', '', '', '', '']);
     setShowNameInput(true);
     setShowResults(false);
+    setAssignedRoles({});
   };
 
   // Новая рандомизация
-  const rerandomize = () => {
+  const rerandomize = (): void => {
     randomizeRoles();
   };
 
   // Возврат к выбору ролей
-  const backToRoleSelection = () => {
+  const backToRoleSelection = (): void => {
     setShowResults(false);
+  };
+
+  // Получение цвета для роли
+  const getRoleColor = (role: Role): string => {
+    const colors: Record<Role, string> = {
+      adc: '#ff4d4d',
+      jungle: '#4caf50',
+      top: '#ff9800',
+      support: '#9c27b0',
+      mid: '#2196f3'
+    };
+    return colors[role];
   };
 
   return (
@@ -171,11 +206,14 @@ function App() {
             <form onSubmit={handleNamesSubmit}>
               {playerNames.map((name, index) => (
                 <div key={index} className="name-input-group">
-                  <label>Игрок {index + 1}:</label>
+                  <label htmlFor={`player-${index}`}>Игрок {index + 1}:</label>
                   <input
+                    id={`player-${index}`}
                     type="text"
                     value={name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                      handleNameChange(index, e.target.value)
+                    }
                     placeholder={`Ник игрока ${index + 1}`}
                     required
                   />
@@ -207,6 +245,11 @@ function App() {
                             className={`role-button ${
                               selectedRoles[player.id]?.includes(role) ? 'selected' : ''
                             }`}
+                            style={{
+                              borderColor: selectedRoles[player.id]?.includes(role) 
+                                ? getRoleColor(role) 
+                                : undefined
+                            }}
                           >
                             {role.toUpperCase()}
                           </button>
@@ -230,18 +273,26 @@ function App() {
             ) : (
               <div className="results-section">
                 <h2>Результаты распределения</h2>
-                <button onClick={backToRoleSelection} className="back-button">
-                  Назад к выбору ролей
-                </button>
-                <button onClick={rerandomize} className="rerandomize-button">
-                  Перемешать
-                </button>
+                <div className="results-actions">
+                  <button onClick={backToRoleSelection} className="back-button">
+                    Назад к выбору ролей
+                  </button>
+                  <button onClick={rerandomize} className="rerandomize-button">
+                    Перемешать
+                  </button>
+                </div>
                 
                 <div className="results-grid">
                   {players.map(player => (
                     <div key={player.id} className="result-card">
                       <div className="player-name">{player.name}</div>
-                      <div className={`assigned-role role-${assignedRoles[player.id]}`}>
+                      <div 
+                        className="assigned-role"
+                        style={{ 
+                          color: getRoleColor(assignedRoles[player.id]),
+                          textShadow: `0 0 10px ${getRoleColor(assignedRoles[player.id])}80`
+                        }}
+                      >
                         {assignedRoles[player.id]?.toUpperCase()}
                       </div>
                     </div>
@@ -254,6 +305,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;

@@ -3,6 +3,7 @@
   min-height: 100vh;
   background-color: #0a1428;
   color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .App-header {
@@ -10,12 +11,14 @@
   padding: 20px;
   border-bottom: 3px solid #785a28;
   margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .App-header h1 {
   margin: 0;
   color: #c8aa6e;
   font-size: 2em;
+  text-shadow: 0 0 10px rgba(200, 170, 110, 0.3);
 }
 
 .App-main {
@@ -32,11 +35,13 @@
   padding: 30px;
   border-radius: 10px;
   border: 1px solid #3c3c3c;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .name-input-container h2 {
   color: #c8aa6e;
   margin-bottom: 30px;
+  font-size: 1.5em;
 }
 
 .name-input-group {
@@ -48,21 +53,28 @@
   display: block;
   margin-bottom: 5px;
   color: #a09b8c;
+  font-weight: bold;
 }
 
 .name-input-group input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #2a2f3b;
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   color: white;
   font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
 .name-input-group input:focus {
   outline: none;
   border-color: #785a28;
+  box-shadow: 0 0 5px rgba(120, 90, 40, 0.5);
+}
+
+.name-input-group input::placeholder {
+  color: #5a5e6b;
 }
 
 /* Кнопки */
@@ -70,22 +82,37 @@ button {
   background-color: #32281c;
   color: #c8aa6e;
   border: 1px solid #785a28;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 button:hover {
   background-color: #785a28;
   color: #010a13;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(120, 90, 40, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button:disabled:hover {
+  background-color: #32281c;
+  color: #c8aa6e;
 }
 
 .submit-button {
@@ -93,6 +120,14 @@ button:disabled {
   margin-top: 20px;
   padding: 15px;
   font-size: 18px;
+  background-color: #0a323c;
+  border-color: #0ac8b9;
+  color: #0ac8b9;
+}
+
+.submit-button:hover {
+  background-color: #0ac8b9;
+  color: #010a13;
 }
 
 .reset-names-button {
@@ -100,6 +135,11 @@ button:disabled {
   background-color: transparent;
   border-color: #5c5c5c;
   color: #a09b8c;
+}
+
+.reset-names-button:hover {
+  background-color: #5c5c5c;
+  color: white;
 }
 
 /* Стили для карточек игроков */
@@ -110,6 +150,7 @@ button:disabled {
 .players-section h2 {
   color: #c8aa6e;
   margin-bottom: 30px;
+  font-size: 1.8em;
 }
 
 .player-card {
@@ -119,6 +160,12 @@ button:disabled {
   padding: 20px;
   margin-bottom: 20px;
   text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .player-card h3 {
@@ -126,6 +173,7 @@ button:disabled {
   color: #c8aa6e;
   border-bottom: 1px solid #3c3c3c;
   padding-bottom: 10px;
+  font-size: 1.3em;
 }
 
 .roles-buttons {
@@ -141,13 +189,15 @@ button:disabled {
   background-color: #2a2f3b;
   border-color: #3c3c3c;
   color: white;
+  padding: 10px;
+  font-size: 14px;
 }
 
 .role-button.selected {
   background-color: #0a323c;
-  border-color: #0ac8b9;
-  color: #0ac8b9;
-  box-shadow: 0 0 10px rgba(10, 200, 185, 0.3);
+  color: white;
+  box-shadow: 0 0 15px currentColor;
+  border-width: 2px;
 }
 
 .role-button:hover {
@@ -159,6 +209,8 @@ button:disabled {
   text-align: right;
   color: #a09b8c;
   font-size: 14px;
+  margin-top: 10px;
+  font-style: italic;
 }
 
 .randomize-button {
@@ -169,11 +221,34 @@ button:disabled {
   border-color: #0ac8b9;
   color: #0ac8b9;
   margin-top: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.randomize-button:hover {
-  background-color: #0ac8b9;
-  color: #010a13;
+.randomize-button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(10, 200, 185, 0) 0%,
+    rgba(10, 200, 185, 0.1) 50%,
+    rgba(10, 200, 185, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
 }
 
 /* Стили для результатов */
@@ -182,15 +257,24 @@ button:disabled {
   padding: 30px;
   border-radius: 10px;
   border: 1px solid #3c3c3c;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .results-section h2 {
   color: #c8aa6e;
   margin-bottom: 30px;
+  font-size: 1.8em;
+}
+
+.results-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .back-button, .rerandomize-button {
-  margin: 0 10px 30px;
+  min-width: 150px;
 }
 
 .results-grid {
@@ -205,6 +289,13 @@ button:disabled {
   border-radius: 10px;
   padding: 20px;
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+.result-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border-color: #785a28;
 }
 
 .player-name {
@@ -212,44 +303,32 @@ button:disabled {
   font-weight: bold;
   margin-bottom: 15px;
   color: #c8aa6e;
+  word-break: break-word;
 }
 
 .assigned-role {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
-  padding: 10px;
+  padding: 15px;
   border-radius: 5px;
+  animation: fadeIn 0.5s ease;
 }
 
-.role-adc {
-  color: #ff4d4d;
-  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
-}
-
-.role-jungle {
-  color: #4caf50;
-  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-}
-
-.role-top {
-  color: #ff9800;
-  text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
-}
-
-.role-support {
-  color: #9c27b0;
-  text-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
-}
-
-.role-mid {
-  color: #2196f3;
-  text-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
   .App-header h1 {
-    font-size: 1.5em;
+    font-size: 1.3em;
   }
 
   .roles-buttons {
@@ -258,9 +337,36 @@ button:disabled {
 
   .role-button {
     width: 100%;
+    min-width: auto;
   }
 
   .results-grid {
     grid-template-columns: 1fr;
+  }
+
+  .results-actions {
+    flex-direction: column;
+  }
+
+  .back-button, .rerandomize-button {
+    width: 100%;
+  }
+
+  .name-input-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-main {
+    padding: 10px;
+  }
+
+  .player-card {
+    padding: 15px;
+  }
+
+  .assigned-role {
+    font-size: 24px;
   }
 }
