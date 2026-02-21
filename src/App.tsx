@@ -25,9 +25,27 @@ const App: React.FC = () => {
   const [selectedRoles, setSelectedRoles] = useState<SelectedRoles>({});
   const [assignedRoles, setAssignedRoles] = useState<AssignedRoles>({});
   const [showResults, setShowResults] = useState<boolean>(false);
+  const [randomNumber] = useState(() => Math.random());
 
   // Роли в игре
   const roles: Role[] = ['adc', 'jungle', 'top', 'support', 'mid'];
+
+
+  // Инициализация игроков
+  const initializePlayers = (names: string[]): void => {
+    const playersList: Player[] = names.map((name, index) => ({
+      id: index,
+      name: name.trim(),
+    }));
+    setPlayers(playersList);
+    
+    // Инициализация выбранных ролей для каждого игрока
+    const initialRoles: SelectedRoles = {};
+    playersList.forEach(player => {
+      initialRoles[player.id] = [];
+    });
+    setSelectedRoles(initialRoles);
+  };
 
   // Загрузка ников из localStorage при монтировании
   useEffect(() => {
@@ -48,22 +66,6 @@ const App: React.FC = () => {
       }
     }
   }, []);
-
-  // Инициализация игроков
-  const initializePlayers = (names: string[]): void => {
-    const playersList: Player[] = names.map((name, index) => ({
-      id: index,
-      name: name.trim(),
-    }));
-    setPlayers(playersList);
-    
-    // Инициализация выбранных ролей для каждого игрока
-    const initialRoles: SelectedRoles = {};
-    playersList.forEach(player => {
-      initialRoles[player.id] = [];
-    });
-    setSelectedRoles(initialRoles);
-  };
 
   // Сохранение ников и переход к выбору ролей
   const handleNamesSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -141,7 +143,7 @@ const App: React.FC = () => {
           break;
         }
 
-        const randomIndex = Math.floor(Math.random() * possibleRoles.length);
+        const randomIndex = Math.floor(randomNumber * possibleRoles.length);
         const assignedRole = possibleRoles[randomIndex];
         
         assignments[player.id] = assignedRole;
