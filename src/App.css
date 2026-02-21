@@ -1,42 +1,266 @@
-#root {
-  max-width: 1280px;
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #0a1428;
+  color: white;
+}
+
+.App-header {
+  background-color: #010a13;
+  padding: 20px;
+  border-bottom: 3px solid #785a28;
+  margin-bottom: 30px;
+}
+
+.App-header h1 {
+  margin: 0;
+  color: #c8aa6e;
+  font-size: 2em;
+}
+
+.App-main {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 20px;
+}
+
+/* Стили для ввода имен */
+.name-input-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #1e2328;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #3c3c3c;
+}
+
+.name-input-container h2 {
+  color: #c8aa6e;
+  margin-bottom: 30px;
+}
+
+.name-input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.name-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #a09b8c;
+}
+
+.name-input-group input {
+  width: 100%;
+  padding: 10px;
+  background-color: #2a2f3b;
+  border: 1px solid #3c3c3c;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+}
+
+.name-input-group input:focus {
+  outline: none;
+  border-color: #785a28;
+}
+
+/* Кнопки */
+button {
+  background-color: #32281c;
+  color: #c8aa6e;
+  border: 1px solid #785a28;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #785a28;
+  color: #010a13;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+}
+
+.reset-names-button {
+  margin-bottom: 20px;
+  background-color: transparent;
+  border-color: #5c5c5c;
+  color: #a09b8c;
+}
+
+/* Стили для карточек игроков */
+.players-section {
+  margin-bottom: 30px;
+}
+
+.players-section h2 {
+  color: #c8aa6e;
+  margin-bottom: 30px;
+}
+
+.player-card {
+  background-color: #1e2328;
+  border: 1px solid #3c3c3c;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.player-card h3 {
+  margin: 0 0 15px 0;
+  color: #c8aa6e;
+  border-bottom: 1px solid #3c3c3c;
+  padding-bottom: 10px;
+}
+
+.roles-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.role-button {
+  flex: 1;
+  min-width: 80px;
+  background-color: #2a2f3b;
+  border-color: #3c3c3c;
+  color: white;
+}
+
+.role-button.selected {
+  background-color: #0a323c;
+  border-color: #0ac8b9;
+  color: #0ac8b9;
+  box-shadow: 0 0 10px rgba(10, 200, 185, 0.3);
+}
+
+.role-button:hover {
+  background-color: #3c3c3c;
+  color: white;
+}
+
+.selected-count {
+  text-align: right;
+  color: #a09b8c;
+  font-size: 14px;
+}
+
+.randomize-button {
+  width: 100%;
+  padding: 20px;
+  font-size: 24px;
+  background-color: #0a323c;
+  border-color: #0ac8b9;
+  color: #0ac8b9;
+  margin-top: 20px;
+}
+
+.randomize-button:hover {
+  background-color: #0ac8b9;
+  color: #010a13;
+}
+
+/* Стили для результатов */
+.results-section {
+  background-color: #1e2328;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #3c3c3c;
+}
+
+.results-section h2 {
+  color: #c8aa6e;
+  margin-bottom: 30px;
+}
+
+.back-button, .rerandomize-button {
+  margin: 0 10px 30px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.result-card {
+  background-color: #2a2f3b;
+  border: 1px solid #3c3c3c;
+  border-radius: 10px;
+  padding: 20px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.player-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #c8aa6e;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.assigned-role {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.role-adc {
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+}
+
+.role-jungle {
+  color: #4caf50;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.role-top {
+  color: #ff9800;
+  text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
+.role-support {
+  color: #9c27b0;
+  text-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
+}
+
+.role-mid {
+  color: #2196f3;
+  text-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 1.5em;
   }
-  to {
-    transform: rotate(360deg);
+
+  .roles-buttons {
+    flex-direction: column;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .role-button {
+    width: 100%;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
 }
